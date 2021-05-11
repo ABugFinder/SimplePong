@@ -9,7 +9,7 @@ var yBallPos = (boardHeight)/2;
 
 const ballSpeed = 5;
 var ballSpeedX = 5;
-var ballSpeedY = 0;
+var ballSpeedY = 5;
 
 var h = boardHeight/3.5;
 var playerWith = 20;

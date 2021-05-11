@@ -71,10 +71,17 @@ function moveBall() {
     //console.log(xBallPos);
     if(xBallPos < 0 || xBallPos >= boardWidth){
         ballSpeedX *= -1;
+        //xBallPos = (boardWidth-wBall)/2;
+        //yBallPos = (boardHeight-wBall)/2;
     }    
 
     if(yBallPos < 0 || yBallPos >= boardHeight){
         ballSpeedY *= -1;
+    }
+
+    //Colisión con players
+    if(xBallPos <= yPosP1 && xBallPos <= yPosP1+h){
+        ballSpeedX *= 1;
     }
 
     drawBall(wBall, xBallPos, yBallPos);
@@ -94,11 +101,15 @@ function actualizarPuntos(){
 function movePlayer1(){
     //w->87
     //s->83
-    if(keyIsDown(87)){
-        yPosP1 -= 5;
+    if(yPosP1 > 0){
+        if(keyIsDown(87)){
+            yPosP1 -= 5;
+        }
     }
-    if(keyIsDown(83)){
-        yPosP1 += 5;
+    if(yPosP1+h <= boardHeight){
+        if(keyIsDown(83)){
+            yPosP1 += 5;
+        }
     }
     drawPlayer1(playerWith, boardHeight/3.5, xPosP1, yPosP1);
 }
@@ -106,11 +117,15 @@ function movePlayer1(){
 function movePlayer2(){
     //up->38
     //down->40
-    if(keyIsDown(UP_ARROW)){
-        yPosP2 -= 5;
+    if(yPosP2 > 0){
+        if(keyIsDown(UP_ARROW)){
+            yPosP2 -= 5;
+        }
     }
-    if(keyIsDown(DOWN_ARROW)){
-        yPosP2 += 5;
+    if(yPosP2+h <= boardHeight){
+        if(keyIsDown(DOWN_ARROW)){
+            yPosP2 += 5;
+        }
     }
     drawPlayer2(playerWith, boardHeight/3.5, xPosP2, yPosP2);
 }

@@ -4,14 +4,14 @@ const boardWidth = 800;
 
 var wBall = 35;
 
-var xBallPos = (boardWidth-wBall)/2;
-var yBallPos = (boardHeight-wBall)/2;
+var xBallPos = (boardWidth)/2;
+var yBallPos = (boardHeight)/2;
 
+const ballSpeed = 5;
 var ballSpeedX = 5;
-var ballSpeedY = 5;
+var ballSpeedY = 0;
 
 var h = boardHeight/3.5;
-
 var playerWith = 20;
 
 var xPosP1 = 15;
@@ -49,10 +49,6 @@ function drawPlayer1(playerWith,h, xPosP1, yPosP1){
 }
 
 function drawPlayer2(playerWith,h, xPosP2, yPosP2){
-    //w = 20; h = 100;
-    //xPosP2 = boardWidth-playerWith-15;
-    //yPosP2 = (boardHeight-h)/2;
-
     fill(102, 15, 0);
     rect(xPosP2, yPosP2, playerWith, h);
 }
@@ -66,25 +62,56 @@ function drawBall(w, xBallPos, yBallPos){
 }
 
 function moveBall() {
+    var ballLeft = xBallPos-(wBall/2);
+    var ballRight = xBallPos+(wBall/2);
+    //var ballUp = yBallPos-(wBall/2);
+    //var ballDown = yBallPos+(wBall/2);
+    
     xBallPos += ballSpeedX;
     yBallPos += ballSpeedY;
+    
+    //console.log("X: " + `${xBallPos},` +" Y: " + `${yBallPos}`);
+    //console.log(`${ballLeft}` + ", " + `${xPosP1+playerWith}`);
+    //console.log(yPosP1+h)
+    
+    //Colisión con player1
+    if(xPosP1 <= ballLeft && ballLeft <= xPosP1+playerWith && yBallPos >= yPosP1 && yBallPos <= yPosP1+h){
+        ballSpeedX = ballSpeed;
+    }
+
+    //Colisión con player2
+    if(ballRight >= xPosP2 && ballRight <= xPosP2+playerWith && yBallPos >= yPosP2 && yBallPos <= yPosP2+h){
+        ballSpeedX = ballSpeed*-1;
+    } 
+    
     //console.log(xBallPos);
-    if(xBallPos < 0 || xBallPos >= boardWidth){
+    if(xBallPos >= boardWidth){
         ballSpeedX *= -1;
-        //xBallPos = (boardWidth-wBall)/2;
-        //yBallPos = (boardHeight-wBall)/2;
-    }    
+        xBallPos = boardWidth/2;
+        yBallPos = boardHeight/2;
+        addPointsToP1();
+    }
+
+    if(xBallPos <= 0){
+        ballSpeedX *= -1;
+        xBallPos = boardWidth/2;
+        yBallPos = boardHeight/2;
+        addPointsToP2();
+    }
 
     if(yBallPos < 0 || yBallPos >= boardHeight){
         ballSpeedY *= -1;
     }
 
-    //Colisión con players
-    if(xBallPos <= yPosP1 && xBallPos <= yPosP1+h){
-        ballSpeedX *= 1;
-    }
-
     drawBall(wBall, xBallPos, yBallPos);
+}
+
+function addPointsToP1(){
+    player1Points++;
+}
+
+function addPointsToP2(){
+    player2Points++;
 }
 
 function actualizarPuntos(){
